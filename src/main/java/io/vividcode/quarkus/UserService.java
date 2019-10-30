@@ -22,6 +22,14 @@ public class UserService {
     }
   }
 
+  public User findById(String id) {
+    return users.get(id);
+  }
+
+  public User deleteUser(String userId) {
+    return users.remove(userId);
+  }
+
   public List<User> list() {
     return new ArrayList<>(users.values());
   }
