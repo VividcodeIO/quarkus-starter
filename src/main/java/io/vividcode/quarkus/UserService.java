@@ -25,6 +25,14 @@ public class UserService {
     return user;
   }
 
+  public User findById(String id) {
+    return users.get(id);
+  }
+
+  public User deleteUser(String userId) {
+    return users.remove(userId);
+  }
+
   public List<User> list() {
     CriteriaQuery<User> query = entityManager.getCriteriaBuilder().createQuery(User.class);
     TypedQuery<User> allQuery = entityManager.createQuery(query.select(query.from(User.class)));
