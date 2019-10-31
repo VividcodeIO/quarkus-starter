@@ -1,28 +1,42 @@
 package io.vividcode.quarkus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 @ApplicationScoped
 public class UserService {
-  private Map<String, User> users = new HashMap<>();
 
-  public UserService() {
-    addUser(new User("test1", "test1@example.com"));
-    addUser(new User("test2", "test2@example.com"));
-    addUser(new User("test3", "test3@example.com"));
-  }
+  @Inject
+  EntityManager entityManager;
 
-  public void addUser(User user) {
+  @Transactional
+  public User addUser(User user) {
     if (user != null) {
-      users.put(user.getId(), user);
+      entityManager.persist(user);
     }
+    return user;
   }
 
   public List<User> list() {
-    return new ArrayList<>(users.values());
+    CriteriaQuery<User> query = entityManager.getCriteriaBuilder().createQuery(User.class);
+    TypedQuery<User> allQuery = entityManager.createQuery(query.select(query.from(User.class)));
+    return allQuery.getResultList();
+  }
+
+  @Transactional
+  public void delete(String id) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaDelete<User> deleteQuery = criteriaBuilder.createCriteriaDelete(User.class);
+    Root<User> root = deleteQuery.from(User.class);
+    deleteQuery.where(criteriaBuilder.equal(root.get("id"), id));
+    entityManager.createQuery(deleteQuery).executeUpdate();
   }
 }

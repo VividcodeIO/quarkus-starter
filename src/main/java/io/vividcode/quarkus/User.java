@@ -1,7 +1,10 @@
 package io.vividcode.quarkus;
 
 import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
+@Entity
 public class User {
   private String id;
   private String name;
@@ -17,6 +20,7 @@ public class User {
     this.email = email;
   }
 
+  @Id
   public String getId() {
     return id;
   }
