@@ -26,7 +26,7 @@ public class ProductResponse {
     return productService.list();
   }
 
-  @Path("priceGte")
+  @Path("/priceGte")
   @GET
   public List<Product> priceGte(@QueryParam("price") BigDecimal price) {
     return productService.findPriceGte(price);
@@ -37,7 +37,7 @@ public class ProductResponse {
     return productService.addProduct(product);
   }
 
-  @Path("{id}")
+  @Path("/{id}")
   @DELETE
   public void delete(@PathParam("id") Long id) {
     productService.delete(id);

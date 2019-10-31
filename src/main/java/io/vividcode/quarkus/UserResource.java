@@ -29,7 +29,7 @@ public class UserResource {
     return userService.addUser(user);
   }
 
-  @Path("{id}")
+  @Path("/{id}")
   @DELETE
   public void delete(@PathParam("id") String id) {
     userService.delete(id);
