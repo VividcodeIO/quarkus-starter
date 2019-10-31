@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response.Status;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
+
   @Inject
   UserService userService;
 
@@ -34,6 +35,8 @@ public class UserResource {
   @DELETE
   public void delete(@PathParam("id") String id) {
     userService.delete(id);
+  }
+
   @Path("{id}")
   public Response getUser(@PathParam("id") String userId) {
     User user = userService.findById(userId);
